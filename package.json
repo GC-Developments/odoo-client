@@ -1,11 +1,11 @@
 {
   "name": "odoo-client-api",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Lightweight, modern TypeScript client for Odoo's /json/2 HTTP API (Bearer token auth), for Node.js and the browser.",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/GC-Developments/odoo-client.git"
+    "url": "https://github.com/GC-Developments/odoo-client-api"
   },
   "bugs": {
     "url": "https://github.com/GC-Developments/odoo-client/issues"
