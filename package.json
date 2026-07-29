@@ -1,0 +1,47 @@
+{
+  "name": "odoo-client-api",
+  "version": "0.1.0",
+  "description": "Lightweight, modern TypeScript client for Odoo's /json/2 HTTP API (Bearer token auth), for Node.js and the browser.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GC-Developments/odoo-client.git"
+  },
+  "bugs": {
+    "url": "https://github.com/GC-Developments/odoo-client/issues"
+  },
+  "homepage": "https://github.com/GC-Developments/odoo-client#readme",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist",
+    "AGENTS.md",
+    "llms.txt"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts --format esm,cjs --dts --clean",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "odoo",
+    "odoo-api",
+    "json-2",
+    "client",
+    "typescript"
+  ],
+  "devDependencies": {
+    "tsup": "^8.5.1",
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.10"
+  }
+}

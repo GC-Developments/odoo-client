@@ -1,0 +1,47 @@
+# odoo-client-api
+
+> TypeScript client for Odoo's /json/2 HTTP API (Bearer token auth). Works in Node.js and browsers. Zero dependencies beyond `fetch`.
+
+## Install
+
+npm install odoo-client-api
+
+## Constructor
+
+new OdooClient(config: OdooClientConfig): OdooClient
+
+OdooClientConfig:
+- url: string (required) — Odoo instance base URL, e.g. "https://mycompany.odoo.com"
+- db: string (required) — database name, sent as X-Odoo-Database header
+- apiKey: string (required) — sent as "Authorization: Bearer <apiKey>"
+- defaultLang?: string — merged into every request's context.lang, default "fr_BE"
+- fetchImpl?: typeof fetch — override for testing / non-standard runtimes, default global fetch
+
+## Methods
+
+call<T>(model: string, options: OdooCallOptions): Promise<T>
+  OdooCallOptions: { action: string, domain?: OdooDomain, fields?: string[], ids?: number[], vals?: Record<string, unknown>, vals_list?: Record<string, unknown>[], limit?: number, offset?: number, order?: string, context?: Record<string, unknown> }
+
+searchRead<T>(model: string, domain?: OdooDomain, fields?: string[], options?: { limit?: number, offset?: number, order?: string, context?: Record<string, unknown> }): Promise<T[]>
+read<T>(model: string, ids: number[], fields?: string[], context?: Record<string, unknown>): Promise<T[]>
+create<T>(model: string, vals: Record<string, unknown> | Record<string, unknown>[], context?: Record<string, unknown>): Promise<T>
+  - single object -> sent as `vals`, resolves to a single id
+  - array of objects -> sent as `vals_list`, resolves to an array of ids
+write(model: string, ids: number[], vals: Record<string, unknown>, context?: Record<string, unknown>): Promise<boolean>
+unlink(model: string, ids: number[], context?: Record<string, unknown>): Promise<boolean>
+
+## Types
+
+OdooDomain = Array<[field: string, operator: string, value: unknown] | "&" | "|" | "!">
+
+## Errors
+
+OdooError extends Error — base class; thrown when the response body contains `{ error }` or on any non-2xx HTTP status not covered below.
+OdooAuthError extends OdooError — thrown on HTTP 401/403. Extra field: status: number.
+OdooNetworkError extends OdooError — thrown when fetch itself fails or the response isn't valid JSON. Extra field: cause: unknown.
+
+## Request shape
+
+Every call is: POST {url}/json/2/{model}/{action}
+Headers: Content-Type: application/json, Authorization: Bearer {apiKey}, X-Odoo-Database: {db}
+Body: JSON object of the OdooCallOptions fields (minus `action`), with `context` always present and `context.lang` defaulted.
